@@ -11,7 +11,7 @@ type Listeners struct {
 	Service_msg_handler    MessageHandlerList
 	Router                 *gin.Engine
 	Coord_actor            coordinator
-	Service_msg_service    ServiceMessagingService
+	Service_msg_processor  ServiceMessageProcessor
 }
 
 // create getter and setters for all the objects
@@ -25,9 +25,8 @@ func (l *Listeners) Listen() {
 			return
 		}
 		c.BindJSON(&message)
-		l.Service_msg_handler.RequestHandler(message)
-		c.JSON(http.StatusOK)
-
+		l.Service_msg_processor.RequestHandler(message)
+		c.JSON(http.StatusOK, gin.H{})
 	})
 
 	l.Router.POST("/coordinator_request", func(c *gin.Context) {
@@ -38,7 +37,7 @@ func (l *Listeners) Listen() {
 		}
 		c.BindJSON(&message)
 		l.Coord_actor.RequestHandler(message)
-		c.JSON(http.StatusOK)
+		c.JSON(http.StatusOK, gin.H{})
 	})
 }
 
