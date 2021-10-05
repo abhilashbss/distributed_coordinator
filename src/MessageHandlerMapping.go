@@ -1,5 +1,12 @@
 package coordinator
 
+type Content struct{
+	ServiceName string	`json: "ServiceName"`
+	Action 		string	`json: "Action"`
+	Data 		string	`json:Data`
+
+}
+
 type Message struct {
 	ServiceName string `json: "ServiceName"`
 	FromNode    int    `json: "FromNode"`
@@ -26,6 +33,12 @@ func (m *MessageHandler) ExecuteMessageHandler() {
 
 type MessageHandlerList struct {
 	MessageHandlerList []MessageHandler
+}
+
+func (m *MessageHandlerList) FindHandlerForAction(Action string) MessageHandler{
+	for _, mh := range m.MessageHandlerList {
+		if(mh.)
+	}
 }
 
 func (m *MessageHandlerList) AddMessageHandler(mh MessageHandler) {

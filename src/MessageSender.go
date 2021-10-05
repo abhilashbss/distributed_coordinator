@@ -15,8 +15,8 @@ const (
 )
 
 type Node_url_mapping struct {
-	Node_id          int
-	Node_listner_url string
+	Node_id          int    `json :"Node_id"`
+	Node_listner_url string `json: "Node_listener_url"`
 }
 
 // Usability : set message, messageType and init Node Listeners and then send message
