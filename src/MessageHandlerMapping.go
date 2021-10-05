@@ -23,3 +23,17 @@ func (m *MessageHandler) SetServiceHandler(handler func(Message)) {
 func (m *MessageHandler) ExecuteMessageHandler() {
 	m.ServiceHandler(m.MessagePacket)
 }
+
+type MessageHandlerList struct {
+	MessageHandlerList []MessageHandler
+}
+
+func (m *MessageHandlerList) AddMessageHandler(mh MessageHandler) {
+	m.MessageHandlerList = append(m.MessageHandlerList, mh)
+}
+
+func (m *MessageHandlerList) ExecuteMessageHandlers() {
+	for _, mh := range m.MessageHandlerList {
+		mh.ExecuteMessageHandler()
+	}
+}
