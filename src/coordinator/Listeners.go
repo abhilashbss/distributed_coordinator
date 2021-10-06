@@ -10,7 +10,7 @@ type Listeners struct {
 	Cluster_op_msg_handler MessageHandlerList
 	Service_msg_handler    MessageHandlerList
 	Router                 *gin.Engine
-	Coord_actor            coordinator
+	Coord_actor            CoordActor
 	Service_msg_processor  ServiceMessageProcessor
 }
 

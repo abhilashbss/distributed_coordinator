@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	coord "github.com/abhilashbss/distributed_coordinator/src"
+	coord "github.com/abhilashbss/distributed_coordinator/src/coordinator"
 )
 
 func printt(s coord.Message) {

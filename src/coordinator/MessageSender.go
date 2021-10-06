@@ -10,8 +10,8 @@ import (
 type MessageType int
 
 const (
-	Coordinator MessageType = iota
-	Service
+	coord MessageType = iota
+	service
 )
 
 type Node_url_mapping struct {
@@ -20,10 +20,11 @@ type Node_url_mapping struct {
 }
 
 // Usability : set message, messageType and init Node Listeners and then send message
+// after setting Node_listner the first time
+// each time just set MessagePacket, Type_of_message and send the message
 type MessageSender struct {
-	MessagePacket   Message
-	Type_of_message MessageType
-	Node_listeners  []Node_url_mapping
+	MessagePacket  Message
+	Node_listeners []Node_url_mapping
 }
 
 func (m *MessageSender) FindListener(Node_id int) string {
@@ -50,7 +51,7 @@ func (m *MessageSender) SendMessage() {
 
 	var jsonStr = []byte(messageJson)
 	var msgType string
-	if m.Type_of_message == Coordinator {
+	if m.MessagePacket.ServiceName == "coordinator" {
 		msgType = "/coordinator_request"
 	} else {
 		msgType = "/service_request"

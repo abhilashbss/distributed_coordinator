@@ -1,17 +1,15 @@
 package coordinator
 
-type Content struct{
-	ServiceName string	`json: "ServiceName"`
-	Action 		string	`json: "Action"`
-	Data 		string	`json:Data`
-
+type Content struct {
+	Action string `json: "Action"`
+	Data   string `json:Data`
 }
 
 type Message struct {
-	ServiceName string `json: "ServiceName"`
-	FromNode    int    `json: "FromNode"`
-	ToNode      int    `json: "ToNode"`
-	Content     string `json: "Content"`
+	ServiceName string  `json: "ServiceName"`
+	FromNode    int     `json: "FromNode"`
+	ToNode      int     `json: "ToNode"`
+	ContentData Content `json: "Content"`
 }
 
 type MessageHandler struct {
@@ -35,10 +33,19 @@ type MessageHandlerList struct {
 	MessageHandlerList []MessageHandler
 }
 
-func (m *MessageHandlerList) FindHandlerForAction(Action string) MessageHandler{
+func (m *MessageHandlerList) FindHandlerForAction(Action string) MessageHandler {
 	for _, mh := range m.MessageHandlerList {
-		if(mh.)
+		if mh.MessagePacket.ContentData.Data == Action {
+			return mh
+		}
 	}
+	return MessageHandler{}
+}
+
+//Initally register Message Handler with dummy message for Action mapping
+func (m *MessageHandlerList) ExecuteForAction(Action string) {
+	mh := m.FindHandlerForAction(Action)
+	mh.ExecuteMessageHandler()
 }
 
 func (m *MessageHandlerList) AddMessageHandler(mh MessageHandler) {
