@@ -8,12 +8,12 @@ import (
 )
 
 func printt(s coord.Message) {
-	fmt.Printf(s.Content + "printtttt")
+	fmt.Printf(s.ContentData.Data + "printtttt")
 }
 
 //Print is working
 func TestConfLoad(t *testing.T) {
-	msg := coord.Message{ServiceName: "abs", FromNode: 1, ToNode: 2, Content: "test_data"}
+	msg := coord.Message{ServiceName: "abs", FromNode: 1, ToNode: 2, ContentData: {ServiceName: "abc", Action: "New_Node", Data: "fsd"}}
 
 	m := coord.MessageHandler{}
 	m.SetServiceHandler(printt)

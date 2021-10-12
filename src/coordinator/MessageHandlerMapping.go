@@ -42,10 +42,12 @@ func (m *MessageHandlerList) FindHandlerForAction(Action string) MessageHandler 
 	return MessageHandler{}
 }
 
-//Initally register Message Handler with dummy message for Action mapping
-func (m *MessageHandlerList) ExecuteForAction(Action string) {
+// Initally register Message Handler with dummy message for Action mapping
+// For new message, find handler from dummy added msg, then take action with passing the new message
+func (m *MessageHandlerList) ExecuteForAction(Action string, msg Message) {
 	mh := m.FindHandlerForAction(Action)
-	mh.ExecuteMessageHandler()
+	handler := mh.ServiceHandler
+	handler(msg)
 }
 
 func (m *MessageHandlerList) AddMessageHandler(mh MessageHandler) {
