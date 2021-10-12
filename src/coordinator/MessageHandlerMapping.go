@@ -7,8 +7,8 @@ type Content struct {
 
 type Message struct {
 	ServiceName string  `json: "ServiceName"`
-	FromNode    int     `json: "FromNode"`
-	ToNode      int     `json: "ToNode"`
+	FromNode    string  `json: "FromNode"`
+	ToNode      string  `json: "ToNode"`
 	ContentData Content `json: "Content"`
 }
 

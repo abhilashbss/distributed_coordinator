@@ -24,21 +24,11 @@ type MessageSender struct {
 	Node_listeners []CommonConfig.Node_url_mapping
 }
 
-func (m *MessageSender) FindListener(Node_id int) string {
-	for _, node_url := range m.Node_listeners {
-		if node_url.Node_id == Node_id {
-			return node_url.Node_listner_url
-		}
-	}
-	return ""
-}
-
 // setters and getters
 // update the listener address of other nodes
 
 func (m *MessageSender) SendMessage() {
-	ToNode := m.MessagePacket.ToNode
-	listener := m.FindListener(ToNode)
+	listener := m.MessagePacket.ToNode
 
 	messageJson, err := json.Marshal(m.MessagePacket)
 	if err != nil {
