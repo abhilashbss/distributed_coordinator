@@ -68,9 +68,9 @@ func (c *CoordActor) AddMessageHandlers() {
 // vv
 
 type NewNodeCommunicator struct {
-	Node_count            int                `json:"Node_count"`
-	Node_listeners        []Node_url_mapping `json:"Node_listeners"`
-	Service_specific_data string             `json:"Service_specific_data"`
+	Node_count            int                             `json:"Node_count"`
+	Node_listeners        []CommonConfig.Node_url_mapping `json:"Node_listeners"`
+	Service_specific_data string                          `json:"Service_specific_data"`
 }
 
 func (c *CoordActor) SendNewNodeResponse(m Message) {
