@@ -1,27 +1,26 @@
 package coordinator
 
 import (
-	"encoding/json"
-	"fmt"
+	"net/http"
 
 	CommonConfig "github.com/abhilashbss/distributed_coordinator/src/CommonConfig"
 	Util "github.com/abhilashbss/distributed_coordinator/src/util"
+	"github.com/gin-gonic/gin"
 )
 
 type CoordActor struct {
-	Node_count             int                             `json:"Node_count"`
-	Seed_node              int                             `json:"Seed_node"`
-	Node_listeners         []CommonConfig.Node_url_mapping `json:"Node_listeners"`
-	Node_number            int                             `json:"Node_number"`
-	Service_specific_data  string                          `json:"Service_specific_data"`
-	Seed_addr              string                          `json:"Seed_address"`
-	Node_addr              string                          `json:"Node_address"`
-	MsgSender              MessageSender
-	Cluster_op_msg_handler MessageHandlerList
-}
-
-func (c *CoordActor) RequestHandler(m Message) {
-
+	Node_count                int                             `json:"Node_count"`
+	Seed_node                 int                             `json:"Seed_node"`
+	Node_listeners            []CommonConfig.Node_url_mapping `json:"Node_listeners"`
+	Node_number               int                             `json:"Node_number"`
+	Current_node_listener     string                          `json:"Current_node_listener"`
+	Service_specific_data     string                          `json:"Service_specific_data"`
+	Seed_addr                 string                          `json:"Seed_address"`
+	Node_addr                 string                          `json:"Node_address"`
+	MsgSender                 MessageSender
+	Cluster_op_msg_handler    MessageHandlerList
+	Service_message_processor MessageHandlerList
+	Router                    *gin.Engine
 }
 
 func (c *CoordActor) LoadCoordinator() {
@@ -35,63 +34,36 @@ func (c *CoordActor) LoadCoordinator() {
 	}
 }
 
-// Resigter Actions for each service as per MessageHandlerMapping
-
-// Issue in from node, as it need to store IP instead of node_number
-
-// Messages
-
-func (c *CoordActor) ExecuteActionForMessage(m Message) {
+func (c *CoordActor) ExecuteCoordinatorActionForMessage(m Message) {
 	c.Cluster_op_msg_handler.ExecuteForAction(m.ContentData.Action, m)
 }
 
-// Handlers
-
-// Coordinator Handlers
-// vv
-
-type NewNodeCommunicator struct {
-	Node_count            int                             `json:"Node_count"`
-	Node_listeners        []CommonConfig.Node_url_mapping `json:"Node_listeners"`
-	Service_specific_data string                          `json:"Service_specific_data"`
+func (c *CoordActor) ExecuteServiceActionForMessage(m Message) {
+	c.Service_message_processor.ExecuteForAction(m.ContentData.Action, m)
 }
 
-func (c *CoordActor) SendNewNodeResponse(m Message) {
+func (c *CoordActor) Listen() {
 
-	var NewMessage Message
-	fromNode := m.FromNode
-	for _, node := range c.Node_listeners {
-		if node.Node_id == fromNode {
-			NewMessage.ContentData.Action = "New_Node_Response"
-			NewMessage.FromNode = c.Node_number
-			NewMessage.ToNode = fromNode
-			NewMessage.ServiceName = "coordinator"
-			var newNodeMsg NewNodeCommunicator
-			newNodeMsg.Node_count = c.Node_count
-			newNodeMsg.Node_listeners = c.Node_listeners
-			newNodeMsg.Service_specific_data = c.Service_specific_data
+	c.Router.Run(c.Node_addr)
+	c.Router.POST("/service_request", func(con *gin.Context) {
 
-			messageJson, err := json.Marshal(newNodeMsg)
-			if err != nil {
-				fmt.Printf("Error: %s", err)
-				return
-			}
-			NewMessage.ContentData.Data = string(messageJson)
-
-			c.MsgSender.MessagePacket = NewMessage
-			c.MsgSender.SendMessage()
+		var message Message
+		if err := con.BindJSON(&message); err != nil {
+			return
 		}
-	}
-	// for complete new node write the logic here
+		con.BindJSON(&message)
+		c.ExecuteServiceActionForMessage(message)
+		con.JSON(http.StatusOK, gin.H{})
+	})
 
+	c.Router.POST("/coordinator_request", func(con *gin.Context) {
+
+		var message Message
+		if err := con.BindJSON(&message); err != nil {
+			return
+		}
+		con.BindJSON(&message)
+		c.ExecuteCoordinatorActionForMessage(message)
+		con.JSON(http.StatusOK, gin.H{})
+	})
 }
-
-func (c *CoordActor) AddNewNodeMessageHandlers() {
-	var msgHandler MessageHandler
-	msgHandler.MessagePacket.ContentData.Action = "New_Node"
-	msgHandler.ServiceHandler = c.SendNewNodeResponse
-	c.Cluster_op_msg_handler.AddMessageHandler(msgHandler)
-}
-
-// ^^
-//Coordinator Handlers
