@@ -1,0 +1,38 @@
+INFO: 2021/10/12 23:51:11 CoordActor.go:78: Coordinator Message recived
+INFO: 2021/10/12 23:51:11 CoordActor.go:79: {coordinator localhost:8082 localhost:8081 {New_Node }}
+INFO: 2021/10/12 23:51:20 CoordActor.go:78: Coordinator Message recived
+INFO: 2021/10/12 23:51:20 CoordActor.go:79: {coordinator localhost:8082 localhost:8081 {New_Node }}
+INFO: 2021/10/12 23:56:47 CoordActor.go:78: Coordinator Message recived
+INFO: 2021/10/12 23:56:47 CoordActor.go:79: {coordinator localhost:8082 localhost:8081 {New_Node }}
+INFO: 2021/10/12 23:57:00 CoordActor.go:78: Coordinator Message recived
+INFO: 2021/10/12 23:57:00 CoordActor.go:79: {coordinator localhost:8082 localhost:8081 {New_Node }}
+INFO: 2021/10/12 23:58:08 CoordActor.go:78: Coordinator Message recived
+INFO: 2021/10/12 23:58:08 CoordActor.go:79: {coordinator localhost:8082 localhost:8081 {New_Node }}
+INFO: 2021/10/12 23:59:49 CoordActor.go:78: Coordinator Message recived
+INFO: 2021/10/12 23:59:49 CoordActor.go:79: {coordinator localhost:8082 localhost:8081 {New_Node }}
+INFO: 2021/10/13 00:00:19 CoordActor.go:78: Coordinator Message recived
+INFO: 2021/10/13 00:00:19 CoordActor.go:79: {coordinator localhost:8082 localhost:8081 {New_Node }}
+INFO: 2021/10/13 00:05:37 CoordActor.go:78: Coordinator Message recived
+INFO: 2021/10/13 00:05:37 CoordActor.go:79: {coordinator localhost:8082 localhost:8081 {New_Node }}
+INFO: 2021/10/13 00:06:37 CoordActor.go:78: Coordinator Message recived
+INFO: 2021/10/13 00:06:37 CoordActor.go:79: {coordinator localhost:8082 localhost:8081 {New_Node }}
+INFO: 2021/10/13 00:10:28 CoordActor.go:76: Coordinator Message recieved
+INFO: 2021/10/13 00:10:28 CoordActor.go:77: {coordinator localhost:8082 localhost:8081 {New_Node }}
+INFO: 2021/10/13 00:11:45 CoordActor.go:76: Coordinator Message recieved
+INFO: 2021/10/13 00:11:45 CoordActor.go:77: {coordinator localhost:8082 localhost:8081 {New_Node }}
+INFO: 2021/10/13 00:28:46 CoordActor.go:76: Coordinator Message recieved
+INFO: 2021/10/13 00:28:46 CoordActor.go:77: {coordinator localhost:8082 localhost:8081 {New_Node }}
+INFO: 2021/10/13 00:29:39 CoordActor.go:76: Coordinator Message recieved
+INFO: 2021/10/13 00:29:39 CoordActor.go:77: {coordinator localhost:8082 localhost:8081 {New_Node }}
+INFO: 2021/10/13 00:32:44 CoordActor.go:76: Coordinator Message recieved
+INFO: 2021/10/13 00:32:44 CoordActor.go:77: {coordinator localhost:8082 localhost:8081 {New_Node }}
+INFO: 2021/10/13 00:33:39 CoordActor.go:76: Coordinator Message recieved
+INFO: 2021/10/13 00:33:39 CoordActor.go:77: {coordinator localhost:8082 localhost:8081 {New_Node }}
+INFO: 2021/10/13 00:34:35 CoordActor.go:76: Coordinator Message recieved
+INFO: 2021/10/13 00:34:35 CoordActor.go:77: {coordinator localhost:8082 localhost:8081 {New_Node }}
+INFO: 2021/10/13 00:36:42 CoordActor.go:76: Coordinator Message recieved
+INFO: 2021/10/13 00:36:42 CoordActor.go:77: {coordinator localhost:8082 localhost:8081 {New_Node }}
+INFO: 2021/10/13 00:40:13 CoordActor.go:76: Coordinator Message recieved
+INFO: 2021/10/13 00:40:13 CoordActor.go:77: {coordinator localhost:8082 localhost:8081 {New_Node }}
+INFO: 2021/10/13 00:41:18 CoordActor.go:76: Coordinator Message recieved
+INFO: 2021/10/13 00:41:18 CoordActor.go:77: {coordinator localhost:8082 localhost:8081 {New_Node }}

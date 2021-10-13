@@ -8,7 +8,7 @@ import (
 )
 
 func (c *CoordActor) LoadSeedCoordinator() {
-	filepath := "/home/abhilashbss/go/src/github.com/abhilashbss/distributed_coordinator/conf/cluster_meta.conf"
+	filepath := c.Cluster_conf_path
 	configuration, _ := Util.LoadSeedConf(filepath)
 	c.Node_count = configuration.Node_count
 	c.Node_listeners = configuration.Node_listeners
@@ -18,9 +18,10 @@ func (c *CoordActor) LoadSeedCoordinator() {
 }
 
 func (c *CoordActor) SendNewNodeResponse(m Message) {
-
+	fmt.Println("Inside Response")
 	var NewMessage Message
 	fromNode := m.FromNode
+	fmt.Println(c)
 	for _, node := range c.Node_listeners {
 		if node.Node_listner_url == fromNode {
 			NewMessage.ContentData.Action = "New_Node_Response"

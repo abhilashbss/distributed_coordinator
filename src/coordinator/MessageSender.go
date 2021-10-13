@@ -29,7 +29,6 @@ type MessageSender struct {
 
 func (m *MessageSender) SendMessage() {
 	listener := m.MessagePacket.ToNode
-
 	messageJson, err := json.Marshal(m.MessagePacket)
 	if err != nil {
 		fmt.Printf("Error: %s", err)
@@ -43,8 +42,10 @@ func (m *MessageSender) SendMessage() {
 	} else {
 		msgType = "/service_request"
 	}
-	req, err := http.NewRequest("POST", listener+msgType, bytes.NewBuffer(jsonStr))
+	req, _ := http.NewRequest("POST", "http://"+listener+msgType, bytes.NewBuffer(jsonStr))
 	req.Header.Set("Content-Type", "application/json")
+
+	fmt.Println(req)
 
 	client := &http.Client{}
 	resp, err := client.Do(req)

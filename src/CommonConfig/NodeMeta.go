@@ -1,8 +1,8 @@
 package CommonConfig
 
 type Node_url_mapping struct {
-	Node_id          int    `json :"Node_id"`
-	Node_listner_url string `json: "Node_listener_url"`
+	Node_id          int    `json:"Node_id"`
+	Node_listner_url string `json:"Node_listener_url"`
 }
 
 type SeedConfiguration struct {

@@ -1,11 +1,14 @@
 package coordinator
 
 import (
+	"fmt"
 	"net/http"
 
-	CommonConfig "github.com/abhilashbss/distributed_coordinator/src/CommonConfig"
-	Util "github.com/abhilashbss/distributed_coordinator/src/util"
 	"github.com/gin-gonic/gin"
+
+	CommonConfig "github.com/abhilashbss/distributed_coordinator/src/CommonConfig"
+	logger "github.com/abhilashbss/distributed_coordinator/src/Logger"
+	Util "github.com/abhilashbss/distributed_coordinator/src/util"
 )
 
 type CoordActor struct {
@@ -17,6 +20,8 @@ type CoordActor struct {
 	Service_specific_data     string                          `json:"Service_specific_data"`
 	Seed_addr                 string                          `json:"Seed_address"`
 	Node_addr                 string                          `json:"Node_address"`
+	Node_conf_path            string
+	Cluster_conf_path         string
 	MsgSender                 MessageSender
 	Cluster_op_msg_handler    MessageHandlerList
 	Service_message_processor MessageHandlerList
@@ -24,13 +29,18 @@ type CoordActor struct {
 }
 
 func (c *CoordActor) LoadCoordinator() {
-	filepath := "/home/abhilashbss/go/src/github.com/abhilashbss/distributed_coordinator/conf/node_init.conf"
+	fmt.Println("Inside Load Coord")
+	filepath := c.Node_conf_path
 	nodeConf, _ := Util.LoadNodeConf(filepath)
 
 	if nodeConf.Current_node == nodeConf.Seed_node {
+		c.Seed_addr = nodeConf.Seed_node
+		c.Node_addr = nodeConf.Current_node
 		c.LoadSeedCoordinator()
+		c.AddNewNodeMessageHandler()
 	} else {
 		c.LoadNodeCoordinator()
+		c.AddNewNodeResponseMessageHandler()
 	}
 }
 
@@ -43,27 +53,31 @@ func (c *CoordActor) ExecuteServiceActionForMessage(m Message) {
 }
 
 func (c *CoordActor) Listen() {
-
-	c.Router.Run(c.Node_addr)
+	c.Router = gin.Default()
 	c.Router.POST("/service_request", func(con *gin.Context) {
-
+		fmt.Println(con)
 		var message Message
 		if err := con.BindJSON(&message); err != nil {
 			return
 		}
 		con.BindJSON(&message)
+		logger.InfoLogger.Println("Service Message recieved")
+		logger.InfoLogger.Println(message)
 		c.ExecuteServiceActionForMessage(message)
 		con.JSON(http.StatusOK, gin.H{})
 	})
 
 	c.Router.POST("/coordinator_request", func(con *gin.Context) {
-
 		var message Message
 		if err := con.BindJSON(&message); err != nil {
 			return
 		}
 		con.BindJSON(&message)
+		logger.InfoLogger.Println("Coordinator Message recieved")
+		logger.InfoLogger.Println(message)
 		c.ExecuteCoordinatorActionForMessage(message)
 		con.JSON(http.StatusOK, gin.H{})
 	})
+
+	c.Router.Run(c.Node_addr)
 }

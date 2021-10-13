@@ -1,0 +1,9 @@
+ERROR: 2021/10/12 20:18:26 Logger_test.go:12: Error testing
+INFO: 2021/10/12 20:18:26 Logger_test.go:13: Info testing
+WARNING: 2021/10/12 20:18:26 Logger_test.go:14: Warning testing
+ERROR: 2021/10/12 23:02:44 Logger_test.go:12: Error testing
+INFO: 2021/10/12 23:02:44 Logger_test.go:13: Info testing
+WARNING: 2021/10/12 23:02:44 Logger_test.go:14: Warning testing
+ERROR: 2021/10/12 23:02:49 Logger_test.go:12: Error testing
+INFO: 2021/10/12 23:02:49 Logger_test.go:13: Info testing
+WARNING: 2021/10/12 23:02:49 Logger_test.go:14: Warning testing

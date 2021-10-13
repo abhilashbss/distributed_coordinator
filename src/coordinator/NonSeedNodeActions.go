@@ -2,13 +2,14 @@ package coordinator
 
 import (
 	"encoding/json"
+	"fmt"
 
 	CommonConfig "github.com/abhilashbss/distributed_coordinator/src/CommonConfig"
 	Util "github.com/abhilashbss/distributed_coordinator/src/util"
 )
 
 func (c *CoordActor) LoadNodeCoordinator() {
-	filepath := "/home/abhilashbss/go/src/github.com/abhilashbss/distributed_coordinator/conf/node_init.conf"
+	filepath := c.Node_conf_path
 	nodeConf, _ := Util.LoadNodeConf(filepath)
 	c.Seed_addr = nodeConf.Seed_node
 	c.Node_addr = nodeConf.Current_node
@@ -22,6 +23,7 @@ func (c *CoordActor) LoadConfMessage() Message {
 	message.ServiceName = "coordinator"
 	message.ContentData.Action = "New_Node"
 	message.ContentData.Data = ""
+	fmt.Println(message)
 	return message
 }
 
