@@ -35,11 +35,11 @@ func (m *MessageHandler) ExecuteMessageHandler() {
 	m.ServiceHandler(m.MessagePacket)
 }
 
-type MessageHandlerList struct {
+type MessageHandlerGroup struct {
 	MessageHandlerList []MessageHandler
 }
 
-func (m *MessageHandlerList) FindHandlerForAction(Action string) MessageHandler {
+func (m *MessageHandlerGroup) FindHandlerForAction(Action string) MessageHandler {
 	for _, mh := range m.MessageHandlerList {
 		if mh.MessagePacket.ContentData.Action == Action {
 			return mh
@@ -50,7 +50,7 @@ func (m *MessageHandlerList) FindHandlerForAction(Action string) MessageHandler 
 
 // Initally register Message Handler with dummy message for Action mapping
 // For new message, find handler from dummy added msg, then take action with passing the new message
-func (m *MessageHandlerList) ExecuteForAction(Action string, msg Message) {
+func (m *MessageHandlerGroup) ExecuteForAction(Action string, msg Message) {
 	messageJson, _ := json.Marshal(msg)
 	logger.InfoLogger.Println("Executing for msg : " + string(messageJson))
 	mh := m.FindHandlerForAction(Action)
@@ -58,11 +58,11 @@ func (m *MessageHandlerList) ExecuteForAction(Action string, msg Message) {
 	handler(msg)
 }
 
-func (m *MessageHandlerList) AddMessageHandler(mh MessageHandler) {
+func (m *MessageHandlerGroup) AddMessageHandler(mh MessageHandler) {
 	m.MessageHandlerList = append(m.MessageHandlerList, mh)
 }
 
-func (m *MessageHandlerList) ExecuteMessageHandlers() {
+func (m *MessageHandlerGroup) ExecuteMessageHandlers() {
 	for _, mh := range m.MessageHandlerList {
 		mh.ExecuteMessageHandler()
 	}

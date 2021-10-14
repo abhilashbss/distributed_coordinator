@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	messaging "github.com/abhilashbss/distributed_coordinator/src/messaging"
 	Util "github.com/abhilashbss/distributed_coordinator/src/util"
 )
 
@@ -17,9 +18,9 @@ func (c *CoordActor) LoadSeedCoordinator() {
 	c.Service_specific_data = configuration.Service_specific_data
 }
 
-func (c *CoordActor) SendNewNodeResponse(m Message) {
+func (c *CoordActor) SendNewNodeResponse(m messaging.Message) {
 	fmt.Println("Inside Response")
-	var NewMessage Message
+	var NewMessage messaging.Message
 	fromNode := m.FromNode
 	fmt.Println(c)
 	for _, node := range c.Node_listeners {
@@ -49,7 +50,7 @@ func (c *CoordActor) SendNewNodeResponse(m Message) {
 }
 
 func (c *CoordActor) AddNewNodeMessageHandler() {
-	var msgHandler MessageHandler
+	var msgHandler messaging.MessageHandler
 	msgHandler.MessagePacket.ContentData.Action = "New_Node"
 	msgHandler.ServiceHandler = c.SendNewNodeResponse
 	c.Cluster_op_msg_handler.AddMessageHandler(msgHandler)

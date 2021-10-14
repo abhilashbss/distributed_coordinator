@@ -2,12 +2,17 @@ package main
 
 import (
 	"sync"
+	"time"
 
 	logger "github.com/abhilashbss/distributed_coordinator/src/Logger"
 	coord "github.com/abhilashbss/distributed_coordinator/src/coordinator"
 )
 
 func main() {
+	FourNodeSeedNodeJoinTest()
+}
+
+func FourNodeSeedNodeJoinTest() {
 
 	var waitGroup sync.WaitGroup
 	waitGroup.Add(4)
@@ -20,6 +25,7 @@ func main() {
 	go func() {
 		coord1.Listen()
 	}()
+	time.Sleep(1 * time.Second)
 
 	// All other nodes
 	coord2 := coord.CoordActor{}
@@ -28,6 +34,7 @@ func main() {
 	go func() {
 		coord2.Listen()
 	}()
+	time.Sleep(1 * time.Second)
 	coord2.LoadCoordinator()
 
 	coord3 := coord.CoordActor{}
@@ -36,6 +43,7 @@ func main() {
 	go func() {
 		coord3.Listen()
 	}()
+	time.Sleep(1 * time.Second)
 	coord3.LoadCoordinator()
 
 	coord4 := coord.CoordActor{}
@@ -44,6 +52,7 @@ func main() {
 	go func() {
 		coord4.Listen()
 	}()
+	time.Sleep(1 * time.Second)
 	coord4.LoadCoordinator()
 
 	waitGroup.Wait()

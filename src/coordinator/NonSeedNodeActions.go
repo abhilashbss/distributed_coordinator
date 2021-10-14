@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	CommonConfig "github.com/abhilashbss/distributed_coordinator/src/CommonConfig"
+	messaging "github.com/abhilashbss/distributed_coordinator/src/messaging"
 	Util "github.com/abhilashbss/distributed_coordinator/src/util"
 )
 
@@ -16,8 +17,8 @@ func (c *CoordActor) LoadNodeCoordinator() {
 	c.SendConnectingMsgToSeedNode()
 }
 
-func (c *CoordActor) LoadConfMessage() Message {
-	var message Message
+func (c *CoordActor) LoadConfMessage() messaging.Message {
+	var message messaging.Message
 	message.FromNode = c.Node_addr
 	message.ToNode = c.Seed_addr
 	message.ServiceName = "coordinator"
@@ -41,7 +42,7 @@ type NewNodeCommunicator struct {
 	Service_specific_data string                          `json:"Service_specific_data"`
 }
 
-func (c *CoordActor) UpdateCoordMeta(m Message) {
+func (c *CoordActor) UpdateCoordMeta(m messaging.Message) {
 	var msgCommunicator NewNodeCommunicator
 	json.Unmarshal([]byte(m.ContentData.Data), &msgCommunicator)
 	fmt.Println("Updating ... ")
@@ -52,7 +53,7 @@ func (c *CoordActor) UpdateCoordMeta(m Message) {
 }
 
 func (c *CoordActor) AddNewNodeResponseMessageHandler() {
-	var msgHandler MessageHandler
+	var msgHandler messaging.MessageHandler
 	msgHandler.MessagePacket.ContentData.Action = "New_Node_Response"
 	msgHandler.ServiceHandler = c.UpdateCoordMeta
 	c.Cluster_op_msg_handler.AddMessageHandler(msgHandler)

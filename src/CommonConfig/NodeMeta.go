@@ -17,3 +17,15 @@ type NodeConfiguration struct {
 	Seed_node    string `json:"Seed_node"`
 	Current_node string `json:"Current_node"`
 }
+
+type Content struct {
+	Action string `json:"Action"`
+	Data   string `json:"Data"`
+}
+
+type Message struct {
+	ServiceName string  `json:"ServiceName"`
+	FromNode    string  `json:"FromNode"`
+	ToNode      string  `json:"ToNode"`
+	ContentData Content `json:"Content"`
+}

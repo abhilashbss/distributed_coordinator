@@ -1,4 +1,4 @@
-package coordinator
+package messaging
 
 import (
 	"bytes"
@@ -8,13 +8,6 @@ import (
 
 	CommonConfig "github.com/abhilashbss/distributed_coordinator/src/CommonConfig"
 	logger "github.com/abhilashbss/distributed_coordinator/src/Logger"
-)
-
-type MessageType int
-
-const (
-	coord MessageType = iota
-	service
 )
 
 // Usability : set message, messageType and init Node Listeners and then send message

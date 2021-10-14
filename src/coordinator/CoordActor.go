@@ -10,6 +10,8 @@ import (
 
 	CommonConfig "github.com/abhilashbss/distributed_coordinator/src/CommonConfig"
 	logger "github.com/abhilashbss/distributed_coordinator/src/Logger"
+	messaging "github.com/abhilashbss/distributed_coordinator/src/messaging"
+	service "github.com/abhilashbss/distributed_coordinator/src/service"
 	Util "github.com/abhilashbss/distributed_coordinator/src/util"
 )
 
@@ -24,9 +26,9 @@ type CoordActor struct {
 	Node_addr                 string                          `json:"Node_address"`
 	Node_conf_path            string
 	Cluster_conf_path         string
-	MsgSender                 MessageSender
-	Cluster_op_msg_handler    MessageHandlerList
-	Service_message_processor MessageHandlerList
+	MsgSender                 messaging.MessageSender
+	Cluster_op_msg_handler    messaging.MessageHandlerGroup
+	Service_message_processor service.ServiceGroup
 	Router                    *gin.Engine
 }
 
@@ -44,12 +46,12 @@ func (c *CoordActor) LoadCoordinator() {
 	}
 }
 
-func (c *CoordActor) ExecuteCoordinatorActionForMessage(m Message) {
+func (c *CoordActor) ExecuteCoordinatorActionForMessage(m messaging.Message) {
 	c.Cluster_op_msg_handler.ExecuteForAction(m.ContentData.Action, m)
 }
 
-func (c *CoordActor) ExecuteServiceActionForMessage(m Message) {
-	c.Service_message_processor.ExecuteForAction(m.ContentData.Action, m)
+func (c *CoordActor) ExecuteServiceActionForMessage(m messaging.Message) {
+	c.Service_message_processor.ExecuteMessageAction(m)
 }
 
 func (c *CoordActor) Listen() {
@@ -59,7 +61,7 @@ func (c *CoordActor) Listen() {
 	c.Router = gin.Default()
 	c.Router.POST("/service_request", func(con *gin.Context) {
 		fmt.Println(con)
-		var message Message
+		var message messaging.Message
 		if err := con.BindJSON(&message); err != nil {
 			return
 		}
@@ -71,7 +73,7 @@ func (c *CoordActor) Listen() {
 	})
 
 	c.Router.POST("/coordinator_request", func(con *gin.Context) {
-		var message Message
+		var message messaging.Message
 		if err := con.BindJSON(&message); err != nil {
 			return
 		}
