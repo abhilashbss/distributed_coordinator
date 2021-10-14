@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	CommonConfig "github.com/abhilashbss/distributed_coordinator/src/CommonConfig"
+	logger "github.com/abhilashbss/distributed_coordinator/src/Logger"
 )
 
 type MessageType int
@@ -58,6 +59,8 @@ func (m *MessageSender) SendMessage() {
 		fmt.Println("Non-OK HTTP status:", resp.StatusCode)
 		return
 	}
+
+	logger.InfoLogger.Println("Sent Message : " + string(messageJson))
 }
 
 func (m *MessageSender) SetMessagePacket(msg Message) {

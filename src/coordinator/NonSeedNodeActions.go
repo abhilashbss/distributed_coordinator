@@ -44,6 +44,8 @@ type NewNodeCommunicator struct {
 func (c *CoordActor) UpdateCoordMeta(m Message) {
 	var msgCommunicator NewNodeCommunicator
 	json.Unmarshal([]byte(m.ContentData.Data), &msgCommunicator)
+	fmt.Println("Updating ... ")
+	fmt.Println(msgCommunicator)
 	c.Node_count = msgCommunicator.Node_count
 	c.Node_listeners = msgCommunicator.Node_listeners
 	c.Service_specific_data = msgCommunicator.Service_specific_data
@@ -52,6 +54,6 @@ func (c *CoordActor) UpdateCoordMeta(m Message) {
 func (c *CoordActor) AddNewNodeResponseMessageHandler() {
 	var msgHandler MessageHandler
 	msgHandler.MessagePacket.ContentData.Action = "New_Node_Response"
-	msgHandler.ServiceHandler = c.SendNewNodeResponse
+	msgHandler.ServiceHandler = c.UpdateCoordMeta
 	c.Cluster_op_msg_handler.AddMessageHandler(msgHandler)
 }

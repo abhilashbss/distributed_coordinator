@@ -1,8 +1,10 @@
 package coordinator
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 
@@ -37,10 +39,8 @@ func (c *CoordActor) LoadCoordinator() {
 		c.Seed_addr = nodeConf.Seed_node
 		c.Node_addr = nodeConf.Current_node
 		c.LoadSeedCoordinator()
-		c.AddNewNodeMessageHandler()
 	} else {
 		c.LoadNodeCoordinator()
-		c.AddNewNodeResponseMessageHandler()
 	}
 }
 
@@ -53,6 +53,9 @@ func (c *CoordActor) ExecuteServiceActionForMessage(m Message) {
 }
 
 func (c *CoordActor) Listen() {
+	c.AddNewNodeMessageHandler()
+	c.AddNewNodeResponseMessageHandler()
+
 	c.Router = gin.Default()
 	c.Router.POST("/service_request", func(con *gin.Context) {
 		fmt.Println(con)
@@ -61,8 +64,8 @@ func (c *CoordActor) Listen() {
 			return
 		}
 		con.BindJSON(&message)
-		logger.InfoLogger.Println("Service Message recieved")
-		logger.InfoLogger.Println(message)
+		messageJson, _ := json.Marshal(message)
+		logger.InfoLogger.Println("Service Message recieved : " + string(messageJson))
 		c.ExecuteServiceActionForMessage(message)
 		con.JSON(http.StatusOK, gin.H{})
 	})
@@ -73,11 +76,18 @@ func (c *CoordActor) Listen() {
 			return
 		}
 		con.BindJSON(&message)
-		logger.InfoLogger.Println("Coordinator Message recieved")
-		logger.InfoLogger.Println(message)
+		messageJson, _ := json.Marshal(message)
+		logger.InfoLogger.Println("Coordinator Message recieved : " + string(messageJson))
 		c.ExecuteCoordinatorActionForMessage(message)
+		logger.InfoLogger.Println("Current coordinator state : " + c.CurrentState())
 		con.JSON(http.StatusOK, gin.H{})
 	})
 
 	c.Router.Run(c.Node_addr)
+}
+
+func (c *CoordActor) CurrentState() string {
+	listenerJson, _ := json.Marshal(c.Node_listeners)
+	state := "Node addr : " + c.Node_addr + " Nodes: " + strconv.Itoa(c.Node_count) + " Node_listeners : " + string(listenerJson)
+	return string(state)
 }

@@ -1,5 +1,11 @@
 package coordinator
 
+import (
+	"encoding/json"
+
+	logger "github.com/abhilashbss/distributed_coordinator/src/Logger"
+)
+
 type Content struct {
 	Action string `json:"Action"`
 	Data   string `json:"Data"`
@@ -45,6 +51,8 @@ func (m *MessageHandlerList) FindHandlerForAction(Action string) MessageHandler 
 // Initally register Message Handler with dummy message for Action mapping
 // For new message, find handler from dummy added msg, then take action with passing the new message
 func (m *MessageHandlerList) ExecuteForAction(Action string, msg Message) {
+	messageJson, _ := json.Marshal(msg)
+	logger.InfoLogger.Println("Executing for msg : " + string(messageJson))
 	mh := m.FindHandlerForAction(Action)
 	handler := mh.ServiceHandler
 	handler(msg)
