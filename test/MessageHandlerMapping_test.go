@@ -8,7 +8,7 @@ import (
 	messaging "github.com/abhilashbss/distributed_coordinator/src/messaging"
 )
 
-func testFunc(msg coord.Message) {
+func testFunc(msg messaging.Message) {
 	fmt.Println("Function call successful")
 }
 

@@ -1,4 +1,4 @@
-package coordinator
+package messaging
 
 import (
 	"encoding/json"

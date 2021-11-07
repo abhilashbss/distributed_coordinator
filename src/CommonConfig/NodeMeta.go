@@ -1,8 +1,8 @@
 package CommonConfig
 
 type Node_url_mapping struct {
-	Node_id          int    `json:"Node_id"`
-	Node_listner_url string `json:"Node_listener_url"`
+	Node_id           int    `json:"Node_id"`
+	Node_listener_url string `json:"Node_listener_url"`
 }
 
 type SeedConfiguration struct {
@@ -16,16 +16,4 @@ type SeedConfiguration struct {
 type NodeConfiguration struct {
 	Seed_node    string `json:"Seed_node"`
 	Current_node string `json:"Current_node"`
-}
-
-type Content struct {
-	Action string `json:"Action"`
-	Data   string `json:"Data"`
-}
-
-type Message struct {
-	ServiceName string  `json:"ServiceName"`
-	FromNode    string  `json:"FromNode"`
-	ToNode      string  `json:"ToNode"`
-	ContentData Content `json:"Content"`
 }
