@@ -79,9 +79,10 @@ func (c *CoordActor) Listen() {
 		}
 		con.BindJSON(&message)
 		messageJson, _ := json.Marshal(message)
+		logger.InfoLogger.Println("Current coordinator state before msg is executed : " + c.CurrentState())
 		logger.InfoLogger.Println("Coordinator Message recieved : " + string(messageJson))
 		c.ExecuteCoordinatorActionForMessage(message)
-		logger.InfoLogger.Println("Current coordinator state : " + c.CurrentState())
+		logger.InfoLogger.Println("Current coordinator state after msg is executed : " + c.CurrentState())
 		con.JSON(http.StatusOK, gin.H{})
 	})
 

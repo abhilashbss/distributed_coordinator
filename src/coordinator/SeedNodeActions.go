@@ -24,7 +24,7 @@ func (c *CoordActor) SendNewNodeResponse(m messaging.Message) {
 	fromNode := m.FromNode
 	fmt.Println(c)
 	for _, node := range c.Node_listeners {
-		if node.Node_listner_url == fromNode {
+		if node.Node_listener_url == fromNode {
 			NewMessage.ContentData.Action = "New_Node_Response"
 			NewMessage.FromNode = c.Node_addr
 			NewMessage.ToNode = fromNode
