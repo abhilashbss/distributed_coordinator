@@ -3,20 +3,28 @@ package main
 import (
 	"flag"
 	"fmt"
+	"sync"
 
 	logger "github.com/abhilashbss/distributed_coordinator/src/Logger"
 	coord "github.com/abhilashbss/distributed_coordinator/src/coordinator"
 )
 
 func main() {
+	var waitGroup sync.WaitGroup
+	waitGroup.Add(1)
+
 	arg_map := parseArgs()
 	fmt.Println(arg_map)
 	logger.InitLogger(arg_map["log_path"])
 	coord1 := coord.CoordActor{}
 	coord1.Node_conf_path = arg_map["node_conf_path"]
 	coord1.Cluster_conf_path = arg_map["cluster_meta_path"]
+	go func() {
+		coord1.Listen()
+	}()
+
 	coord1.LoadCoordinator()
-	coord1.Listen()
+	waitGroup.Wait()
 }
 
 func parseArgs() map[string]string {
