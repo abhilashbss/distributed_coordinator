@@ -9,7 +9,12 @@ import (
 )
 
 func main() {
-	FourNodeSeedNodeJoinTest()
+	logger.InitLogger("/home/abhilashbss/go/src/github.com/abhilashbss/distributed_coordinator/log/logs.txt")
+	coord1 := coord.CoordActor{}
+	coord1.Node_conf_path = "/home/abhilashbss/go/src/github.com/abhilashbss/distributed_coordinator/conf/node_init.conf"
+	coord1.Cluster_conf_path = "/home/abhilashbss/go/src/github.com/abhilashbss/distributed_coordinator/conf/cluster_meta.conf"
+	coord1.LoadCoordinator()
+	coord1.Listen()
 }
 
 func FourNodeSeedNodeJoinTest() {
