@@ -39,3 +39,11 @@ func (e *ExampleService) AddHandlers() {
 	e.ServiceObj.RegisterHandler("ping", e.Handlerping)
 	e.ServiceObj.RegisterHandler("pong", e.Handlerpong)
 }
+
+func (e *ExampleService) Init() {
+	e.AddHandlers()
+}
+
+func (e *ExampleService) RegisterToServiceGroup(serviceGroup ServiceGroup) {
+	serviceGroup.AddService(e.ServiceObj)
+}

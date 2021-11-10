@@ -32,3 +32,8 @@ func (s *ServiceGroup) ExecuteMessageAction(msg messaging.Message) {
 		}
 	}
 }
+
+// create ServiceGroup object in main
+// then create a new service as instance of Service and register handlers
+// register to ServiceGroup
+// Pass the same ServiceGroup object to coord
