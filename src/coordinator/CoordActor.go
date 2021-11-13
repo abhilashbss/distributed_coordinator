@@ -44,10 +44,12 @@ func (c *CoordActor) LoadCoordinator() {
 	} else {
 		c.LoadNodeCoordinator()
 	}
+	c.StateUpdated()
 }
 
 func (c *CoordActor) ExecuteCoordinatorActionForMessage(m messaging.Message) {
 	c.Cluster_op_msg_handler.ExecuteForAction(m.ContentData.Action, m)
+	c.StateUpdated()
 }
 
 func (c *CoordActor) ExecuteServiceActionForMessage(m messaging.Message) {
@@ -93,4 +95,12 @@ func (c *CoordActor) CurrentState() string {
 	listenerJson, _ := json.Marshal(c.Node_listeners)
 	state := "Node addr : " + c.Node_addr + " Nodes: " + strconv.Itoa(c.Node_count) + " Node_listeners : " + string(listenerJson)
 	return string(state)
+}
+
+func (c *CoordActor) StateUpdated() {
+	c.UpdateServiceGroup()
+}
+
+func (c *CoordActor) UpdateServiceGroup() {
+	c.Service_message_processor.InitService(c.Node_addr, c.Node_listeners, c.MsgSender)
 }

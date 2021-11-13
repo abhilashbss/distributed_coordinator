@@ -25,7 +25,6 @@ func main() {
 	go func() {
 		coord1.Listen()
 	}()
-
 	coord1.LoadCoordinator()
 	waitGroup.Wait()
 }
