@@ -36,7 +36,7 @@ func parseArgs() map[string]string {
 	flag.StringVar(&log_path, "log_path", "/log", "log file path")
 	flag.StringVar(&node_init_path, "node_conf_path", "/node_init.conf", "init conf file path")
 	flag.StringVar(&cluster_meta_path, "cluster_conf_path", "/cluster_meta.conf", "cluster meta conf file path")
-	flag.Parse()
+	flag.Parse() 
 	arg_map["log_path"] = log_path
 	arg_map["node_conf_path"] = node_init_path
 	arg_map["cluster_meta_path"] = cluster_meta_path

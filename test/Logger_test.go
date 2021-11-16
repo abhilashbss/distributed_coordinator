@@ -12,7 +12,4 @@ func TestLogger(t *testing.T) {
 	logger.ErrorLogger.Println("Error testing")
 	logger.InfoLogger.Println("Info testing")
 	logger.WarningLogger.Println("Warning testing")
-	// if !reflect.DeepEqual(hashring, hashring_expected) {
-	// 	t.Errorf("got %s, wanted %s", string(hashring_json), string(hashring_expected_json))
-	// }
 }

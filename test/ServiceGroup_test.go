@@ -9,7 +9,7 @@ import (
 	service "github.com/abhilashbss/distributed_coordinator/src/service"
 )
 
-func ServiceCommunication(t *testing.T) {
+func TestServiceCommunication(t *testing.T) {
 
 	var waitGroup sync.WaitGroup
 	waitGroup.Add(2)
@@ -35,14 +35,14 @@ func ServiceCommunication(t *testing.T) {
 	}()
 	coord2.LoadCoordinator()
 
-	var exService1 service.ExampleService
-	exService1.AddHandlers()
-	exService1.RegisterToServiceGroup(coord1.Service_message_processor)
-	exService1.ActionSendPing("localhost:8082")
+	// var exService1 service.ExampleService
+	// exService1.AddHandlers()
+	// exService1.RegisterToServiceGroup(coord1.Service_message_processor)
+	// exService1.ActionSendPing("localhost:8082")
 
-	var exService2 service.ExampleService
-	exService2.AddHandlers()
-	exService2.RegisterToServiceGroup(coord2.Service_message_processor)
+	// var exService2 service.ExampleService
+	// exService2.AddHandlers()
+	// exService2.RegisterToServiceGroup(coord2.Service_message_processor)
 
 	waitGroup.Wait()
 }
