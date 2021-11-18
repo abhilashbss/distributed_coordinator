@@ -32,6 +32,10 @@ type CoordActor struct {
 	Router                    *gin.Engine
 }
 
+func (c *CoordActor) LoadMetadataIfNotSeedNode() {
+	c.SendConnectingMsgToSeedNode()
+}
+
 func (c *CoordActor) LoadCoordinator() {
 	fmt.Println("Inside Load Coord")
 	filepath := c.Node_conf_path
@@ -87,7 +91,7 @@ func (c *CoordActor) Listen() {
 		logger.InfoLogger.Println("Current coordinator state after msg is executed : " + c.CurrentState())
 		con.JSON(http.StatusOK, gin.H{})
 	})
-
+	fmt.Println("Address to bind : " + c.Node_addr)
 	c.Router.Run(c.Node_addr)
 }
 

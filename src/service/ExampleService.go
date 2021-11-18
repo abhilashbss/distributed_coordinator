@@ -20,7 +20,7 @@ func (e *ExampleService) Handlerpong(m messaging.Message) {
 }
 
 func (e *ExampleService) ActionSendPong(m messaging.Message) {
-	logger.InfoLogger.Println("Pong sending to: " + e.ServiceObj.Node_addr + " from : " + e.ServiceObj.Node_addr)
+	logger.InfoLogger.Println("Pong sending to: " + m.FromNode + " from : " + e.ServiceObj.Node_addr)
 	m.ToNode = m.FromNode
 	m.FromNode = e.ServiceObj.Node_addr
 	m.ContentData.Action = "pong"

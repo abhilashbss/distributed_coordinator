@@ -14,7 +14,6 @@ func (c *CoordActor) LoadNodeCoordinator() {
 	nodeConf, _ := Util.LoadNodeConf(filepath)
 	c.Seed_addr = nodeConf.Seed_node
 	c.Node_addr = nodeConf.Current_node
-	c.SendConnectingMsgToSeedNode()
 }
 
 func (c *CoordActor) LoadConfMessage() messaging.Message {

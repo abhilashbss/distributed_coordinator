@@ -21,6 +21,7 @@ func StartCoordinator() {
 
 	arg_map := parseArgs()
 	serviceGroup := InitServices()
+	fmt.Println("Arguement Map")
 	fmt.Println(arg_map)
 	logger.InitLogger(arg_map["log_path"])
 	coord1 := coord.CoordActor{}
@@ -28,21 +29,21 @@ func StartCoordinator() {
 	coord1.Node_conf_path = arg_map["node_conf_path"]
 	coord1.Cluster_conf_path = arg_map["cluster_meta_path"]
 
+	coord1.LoadCoordinator()
 	go func() {
 		coord1.Listen()
 	}()
-	time.Sleep(2 * time.Second)
-	coord1.LoadCoordinator()
 
-	// exService := &service.ExampleService{}
-	// exService.SetServiceName("PingPong")
-	// exService.AddHandlers()
-	// coord1.Service_message_processor.AddService(exService)
+	coord1.LoadMetadataIfNotSeedNode()
+	exService := &service.ExampleService{}
+	exService.SetServiceName("PingPong")
+	exService.AddHandlers()
+	coord1.Service_message_processor.AddService(exService)
 
-	// if coord1.Node_addr == "localhost:8081" {
-	// 	time.Sleep(2 * time.Second)
-	// 	exService.ActionSendPing("localhost:8082")
-	// }
+	if coord1.Node_addr == "localhost:8081" {
+		time.Sleep(2 * time.Second)
+		exService.ActionSendPing("localhost:8082")
+	}
 
 	waitGroup.Wait()
 }
