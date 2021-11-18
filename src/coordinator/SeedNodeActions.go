@@ -19,10 +19,8 @@ func (c *CoordActor) LoadSeedCoordinator() {
 }
 
 func (c *CoordActor) SendNewNodeResponse(m messaging.Message) {
-	fmt.Println("Inside Response")
 	var NewMessage messaging.Message
 	fromNode := m.FromNode
-	fmt.Println(c)
 	for _, node := range c.Node_listeners {
 		if node.Node_listener_url == fromNode {
 			NewMessage.ContentData.Action = "New_Node_Response"

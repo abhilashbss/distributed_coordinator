@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"sync"
 	"time"
 
@@ -21,8 +20,6 @@ func StartCoordinator() {
 
 	arg_map := parseArgs()
 	serviceGroup := InitServices()
-	fmt.Println("Arguement Map")
-	fmt.Println(arg_map)
 	logger.InitLogger(arg_map["log_path"])
 	coord1 := coord.CoordActor{}
 	coord1.Service_message_processor = serviceGroup

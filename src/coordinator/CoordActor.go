@@ -2,7 +2,6 @@ package coordinator
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -37,7 +36,6 @@ func (c *CoordActor) LoadMetadataIfNotSeedNode() {
 }
 
 func (c *CoordActor) LoadCoordinator() {
-	fmt.Println("Inside Load Coord")
 	filepath := c.Node_conf_path
 	nodeConf, _ := Util.LoadNodeConf(filepath)
 
@@ -66,12 +64,10 @@ func (c *CoordActor) Listen() {
 
 	c.Router = gin.Default()
 	c.Router.POST("/service_request", func(con *gin.Context) {
-		fmt.Println(con)
 		var message messaging.Message
 		if err := con.BindJSON(&message); err != nil {
 			return
 		}
-		con.BindJSON(&message)
 		messageJson, _ := json.Marshal(message)
 		logger.InfoLogger.Println("Service Message recieved : " + string(messageJson))
 		c.ExecuteServiceActionForMessage(message)
@@ -83,7 +79,6 @@ func (c *CoordActor) Listen() {
 		if err := con.BindJSON(&message); err != nil {
 			return
 		}
-		con.BindJSON(&message)
 		messageJson, _ := json.Marshal(message)
 		logger.InfoLogger.Println("Current coordinator state before msg is executed : " + c.CurrentState())
 		logger.InfoLogger.Println("Coordinator Message recieved : " + string(messageJson))
@@ -91,7 +86,6 @@ func (c *CoordActor) Listen() {
 		logger.InfoLogger.Println("Current coordinator state after msg is executed : " + c.CurrentState())
 		con.JSON(http.StatusOK, gin.H{})
 	})
-	fmt.Println("Address to bind : " + c.Node_addr)
 	c.Router.Run(c.Node_addr)
 }
 

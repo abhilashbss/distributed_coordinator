@@ -2,7 +2,6 @@ package coordinator
 
 import (
 	"encoding/json"
-	"fmt"
 
 	CommonConfig "github.com/abhilashbss/distributed_coordinator/src/CommonConfig"
 	messaging "github.com/abhilashbss/distributed_coordinator/src/messaging"
@@ -23,7 +22,6 @@ func (c *CoordActor) LoadConfMessage() messaging.Message {
 	message.ServiceName = "coordinator"
 	message.ContentData.Action = "New_Node"
 	message.ContentData.Data = ""
-	fmt.Println(message)
 	return message
 }
 
@@ -44,8 +42,6 @@ type NewNodeCommunicator struct {
 func (c *CoordActor) UpdateCoordMeta(m messaging.Message) {
 	var msgCommunicator NewNodeCommunicator
 	json.Unmarshal([]byte(m.ContentData.Data), &msgCommunicator)
-	fmt.Println("Updating ... ")
-	fmt.Println(msgCommunicator)
 	c.Node_count = msgCommunicator.Node_count
 	c.Node_listeners = msgCommunicator.Node_listeners
 	c.Service_specific_data = msgCommunicator.Service_specific_data

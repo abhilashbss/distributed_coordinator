@@ -39,8 +39,6 @@ func (m *MessageSender) SendMessage() {
 	req, _ := http.NewRequest("POST", "http://"+listener+msgType, bytes.NewBuffer(jsonStr))
 	req.Header.Set("Content-Type", "application/json")
 
-	fmt.Println(req)
-
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
