@@ -19,16 +19,15 @@ func (s *ServiceGroup) InitService(Node_addr string, Node_listeners []CommonConf
 }
 
 func (s *ServiceGroup) AddService(service Service) {
-	service.Node_addr = s.Node_addr
-	service.Node_listeners = s.Node_listeners
-	service.MsgSender = s.MsgSender
+	service.AddNodeOperations(s.Node_addr, s.Node_listeners, s.MsgSender)
 	s.ServiceList = append(s.ServiceList, service)
 }
 
 func (s *ServiceGroup) ExecuteMessageAction(msg messaging.Message) {
 	for _, service := range s.ServiceList {
-		if service.Service_name == msg.ServiceName {
-			service.Service_handler.ExecuteForAction(msg.ContentData.Action, msg)
+		if service.GetServiceName() == msg.ServiceName {
+			handler := service.GetServiceHandler()
+			handler.ExecuteForAction(msg.ContentData.Action, msg)
 		}
 	}
 }
