@@ -55,6 +55,10 @@ func (e *ExampleService) GetServiceName() string {
 	return e.ServiceObj.Service_name
 }
 
+func (e *ExampleService) SetServiceName(name string) {
+	e.ServiceObj.Service_name = name
+}
+
 func (e *ExampleService) GetServiceHandler() messaging.MessageHandlerGroup {
 	return e.ServiceObj.Service_handler
 }

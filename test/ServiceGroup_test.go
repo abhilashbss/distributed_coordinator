@@ -1,6 +1,7 @@
 package Testing
 
 import (
+	"fmt"
 	"sync"
 	"testing"
 
@@ -43,6 +44,47 @@ func TestServiceCommunication(t *testing.T) {
 	// var exService2 service.ExampleService
 	// exService2.AddHandlers()
 	// exService2.RegisterToServiceGroup(coord2.Service_message_processor)
+
+	waitGroup.Wait()
+}
+
+func TestFuncServiceGroup(t *testing.T) {
+	var waitGroup sync.WaitGroup
+	waitGroup.Add(2)
+
+	var serviceGroup1 service.ServiceGroup
+	logger.InitLogger("/home/abhilashbss/go/src/github.com/abhilashbss/distributed_coordinator/log/logs.txt")
+	coord1 := coord.CoordActor{}
+	coord1.Service_message_processor = serviceGroup1
+	coord1.Node_conf_path = "/home/abhilashbss/go/src/github.com/abhilashbss/distributed_coordinator/conf/node_init_1.conf"
+	coord1.Cluster_conf_path = "/home/abhilashbss/go/src/github.com/abhilashbss/distributed_coordinator/conf/cluster_meta.conf"
+	go func() {
+		coord1.Listen()
+	}()
+	coord1.LoadCoordinator()
+
+	var serviceGroup2 service.ServiceGroup
+	coord2 := coord.CoordActor{}
+	coord2.Service_message_processor = serviceGroup2
+	coord2.Node_conf_path = "/home/abhilashbss/go/src/github.com/abhilashbss/distributed_coordinator/conf/node_init_2.conf"
+	coord2.Cluster_conf_path = "/home/abhilashbss/go/src/github.com/abhilashbss/distributed_coordinator/conf/cluster_meta.conf"
+	go func() {
+		coord2.Listen()
+	}()
+	coord2.LoadCoordinator()
+
+	exService1 := &service.ExampleService{}
+	exService1.SetServiceName("PingPong")
+	exService1.AddHandlers()
+	coord1.Service_message_processor.AddService(exService1)
+	fmt.Println(exService1.ServiceObj.Node_addr)
+
+	exService2 := &service.ExampleService{}
+	exService1.SetServiceName("PingPong")
+	exService2.AddHandlers()
+	coord2.Service_message_processor.AddService(exService2)
+
+	exService1.ActionSendPing("localhost:8082")
 
 	waitGroup.Wait()
 }
